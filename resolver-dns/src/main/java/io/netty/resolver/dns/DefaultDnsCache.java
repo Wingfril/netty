@@ -191,7 +191,7 @@ public class DefaultDnsCache implements DnsCache {
             return e;
         }
         cache0(appendDot(hostname), e,
-                Math.max(minTtl, Math.min(MAX_SUPPORTED_TTL_SECS, (int) Math.min(maxTtl, originalTtl))), loop);
+                Math.max(minTtl, (int) Math.min(maxTtl, originalTtl)), loop);
         return e;
     }
 
@@ -206,7 +206,7 @@ public class DefaultDnsCache implements DnsCache {
             return e;
         }
 
-        cache0(appendDot(hostname), e, Math.min(MAX_SUPPORTED_TTL_SECS, negativeTtl), loop);
+        cache0(appendDot(hostname), e, negativeTtl, loop);
         return e;
     }
 
@@ -334,6 +334,9 @@ public class DefaultDnsCache implements DnsCache {
 
         private void scheduleCacheExpirationIfNeeded(int ttl, EventLoop loop) {
             for (;;) {
+                // We currently don't calculate a new TTL when we need to retry the CAS as we don't expect this to
+                // be invoked very concurrently and also we use SECONDS anyway. If this ever becomes a problem
+                // we can reconsider.
                 ScheduledFuture<?> oldFuture = FUTURE_UPDATER.get(this);
                 if (oldFuture == null || oldFuture.getDelay(TimeUnit.SECONDS) > ttl) {
                     ScheduledFuture<?> newFuture = loop.schedule(this, ttl, TimeUnit.SECONDS);
