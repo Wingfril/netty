@@ -215,11 +215,6 @@ final class EpollEventLoop extends SingleThreadEventLoop {
                                                     : PlatformDependent.<Runnable>newMpscQueue(maxPendingTasks);
     }
 
-    @Override
-    public int pendingTasks() {
-        return super.pendingTasks();
-    }
-
     /**
      * Returns the percentage of the desired amount of time spent for I/O in the event loop.
      */
