@@ -66,12 +66,6 @@ final class KQueueEventLoop extends SingleThreadEventLoop {
             return kqueueWaitNow();
         }
     };
-    private final Callable<Integer> pendingTasksCallable = new Callable<Integer>() {
-        @Override
-        public Integer call() throws Exception {
-            return KQueueEventLoop.super.pendingTasks();
-        }
-    };
 
     private volatile int wakenUp;
     private volatile int ioRatio = 50;

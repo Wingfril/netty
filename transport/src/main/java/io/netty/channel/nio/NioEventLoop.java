@@ -71,12 +71,6 @@ public final class NioEventLoop extends SingleThreadEventLoop {
             return selectNow();
         }
     };
-    private final Callable<Integer> pendingTasksCallable = new Callable<Integer>() {
-        @Override
-        public Integer call() throws Exception {
-            return NioEventLoop.super.pendingTasks();
-        }
-    };
 
     // Workaround for JDK NIO bug.
     //

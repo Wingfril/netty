@@ -73,12 +73,6 @@ final class EpollEventLoop extends SingleThreadEventLoop {
             return epollWaitNow();
         }
     };
-    private final Callable<Integer> pendingTasksCallable = new Callable<Integer>() {
-        @Override
-        public Integer call() throws Exception {
-            return EpollEventLoop.super.pendingTasks();
-        }
-    };
     private volatile int wakenUp;
     private volatile int ioRatio = 50;
 
